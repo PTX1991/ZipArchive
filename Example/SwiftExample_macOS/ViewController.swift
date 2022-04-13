@@ -10,7 +10,7 @@ import Cocoa
 #if UseCarthage
     import ZipArchive
 #else
-    import SSZipArchive
+    import YYZipArchive
 #endif
 
 class ViewController: NSViewController {
@@ -52,7 +52,7 @@ class ViewController: NSViewController {
         print("Zip path:", zipPath!)
         let password = passwordField.stringValue
         
-        let success = SSZipArchive.createZipFile(atPath: zipPath!,
+        let success = YYZipArchive.createZipFile(atPath: zipPath!,
                                                  withContentsOfDirectory: samplePath,
                                                  keepParentDirectory: false,
                                                  compressionLevel: -1,
@@ -82,7 +82,7 @@ class ViewController: NSViewController {
         print("Unzip path:", unzipPath)
         
         let password = passwordField.stringValue
-        let success: Bool = SSZipArchive.unzipFile(atPath: zipPath,
+        let success: Bool = YYZipArchive.unzipFile(atPath: zipPath,
                                                    toDestination: unzipPath,
                                                    preserveAttributes: true,
                                                    overwrite: true,
@@ -128,7 +128,7 @@ class ViewController: NSViewController {
         guard let zipPath = zipPath else {
             return
         }
-        let success = SSZipArchive.isFilePasswordProtected(atPath: zipPath)
+        let success = YYZipArchive.isFilePasswordProtected(atPath: zipPath)
         if success {
             print("Yes, it's password protected.")
             info.stringValue = "Yes, it's password protected."

@@ -9,12 +9,12 @@
 
 
 #if COCOAPODS
-#import <SSZipArchive.h>
+#import <YYZipArchive.h>
 #else
 #import <ZipArchive.h>
 #endif
 
-@interface CancelDelegate : NSObject <SSZipArchiveDelegate>
+@interface CancelDelegate : NSObject <YYZipArchiveDelegate>
 @property (nonatomic, assign) int numFilesUnzipped;
 @property (nonatomic, assign) int numFilesToUnzip;
 @property (nonatomic, assign) BOOL didUnzipArchive;

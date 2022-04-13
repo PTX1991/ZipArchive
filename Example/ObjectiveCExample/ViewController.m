@@ -9,7 +9,7 @@
 #import "ViewController.h"
 
 #if COCOAPODS
-#import <SSZipArchive.h>
+#import <YYZipArchive.h>
 #else
 #import <ZipArchive.h>
 #endif
@@ -50,7 +50,7 @@
     _zipPath = [self tempZipPath];
     NSLog(@"Zip path: %@", _zipPath);
     NSString *password = _passwordField.text;
-    BOOL success = [SSZipArchive createZipFileAtPath:_zipPath
+    BOOL success = [YYZipArchive createZipFileAtPath:_zipPath
                              withContentsOfDirectory:_samplePath
                                  keepParentDirectory:NO
                                     compressionLevel:-1
@@ -79,7 +79,7 @@
         return;
     }
     NSString *password = _passwordField.text;
-    BOOL success = [SSZipArchive unzipFileAtPath:_zipPath
+    BOOL success = [YYZipArchive unzipFileAtPath:_zipPath
                                    toDestination:unzipPath
                               preserveAttributes:YES
                                        overwrite:YES
@@ -131,7 +131,7 @@
     if (!_zipPath) {
         return;
     }
-    BOOL success = [SSZipArchive isFilePasswordProtectedAtPath:_zipPath];
+    BOOL success = [YYZipArchive isFilePasswordProtectedAtPath:_zipPath];
     if (success) {
         NSLog(@"Yes, it's password protected.");
         self.info.text = @"Yes, it's password protected.";

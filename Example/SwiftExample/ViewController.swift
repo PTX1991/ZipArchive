@@ -11,7 +11,7 @@ import UIKit
 #if UseCarthage
     import ZipArchive
 #else
-    import SSZipArchive
+    import YYZipArchive
 #endif
 
 class ViewController: UIViewController {
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         print("Zip path:", zipPath!)
         let password = passwordField.text ?? ""
 
-        let success = SSZipArchive.createZipFile(atPath: zipPath!,
+        let success = YYZipArchive.createZipFile(atPath: zipPath!,
                                                  withContentsOfDirectory: samplePath,
                                                  keepParentDirectory: false,
                                                  compressionLevel: -1,
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
         print("Unzip path:", unzipPath)
         
         let password = passwordField.text ?? ""
-        let success: Bool = SSZipArchive.unzipFile(atPath: zipPath,
+        let success: Bool = YYZipArchive.unzipFile(atPath: zipPath,
                                                    toDestination: unzipPath,
                                                    preserveAttributes: true,
                                                    overwrite: true,
@@ -123,7 +123,7 @@ class ViewController: UIViewController {
         guard let zipPath = zipPath else {
             return
         }
-        let success = SSZipArchive.isFilePasswordProtected(atPath: zipPath)
+        let success = YYZipArchive.isFilePasswordProtected(atPath: zipPath)
         if success {
             print("Yes, it's password protected.")
             info.text = "Yes, it's password protected."

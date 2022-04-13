@@ -8,13 +8,13 @@
 #import <Foundation/Foundation.h>
 
 #if COCOAPODS
-#import <SSZipArchive.h>
+#import <YYZipArchive.h>
 #else
 #import <ZipArchive.h>
 #endif
 
 
-@interface ProgressDelegate : NSObject <SSZipArchiveDelegate>
+@interface ProgressDelegate : NSObject <YYZipArchiveDelegate>
 {
 @public
     NSMutableArray *progressEvents;

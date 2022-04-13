@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
  
 #if COCOAPODS
-#import <SSZipArchive.h>
+#import <YYZipArchive.h>
 #else
 #import <ZipArchive.h>
 #endif
@@ -10,6 +10,6 @@
 /**
  * Test delegate by collecting its calls
  */
-@interface CollectingDelegate : NSObject <SSZipArchiveDelegate>
+@interface CollectingDelegate : NSObject <YYZipArchiveDelegate>
 @property(nonatomic, retain) NSMutableArray<NSString *> *files;
 @end
