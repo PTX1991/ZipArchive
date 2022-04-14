@@ -370,8 +370,8 @@ int twentyMB = 20 * 1024 * 1024;
 
     NSError *error = nil;
     NSDictionary *info = [[NSFileManager defaultManager] attributesOfItemAtPath: testSymlink error: &error];
-    BOOL fileIsSymbolicLink = info[NSFileType] == NSFileTypeSymbolicLink;
-    XCTAssertTrue(fileIsSymbolicLink, @"Symbolic links should persist from the original archive to the outputted files.");
+    BOOL txFileIsSymbolicLink = info[NSFileType] == NSFileTypeSymbolicLink;
+    XCTAssertTrue(txFileIsSymbolicLink, @"Symbolic links should persist from the original archive to the outputted files.");
 }
 
 - (void)testUnzippingWithRelativeSymlink {
@@ -391,8 +391,8 @@ int twentyMB = 20 * 1024 * 1024;
     NSString *testSymlinkFile = [NSString pathWithComponents:@[testBasePath, subfolderName, @"fileSymlink"]];
 
     NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:testSymlinkFile error: nil];
-    BOOL fileIsSymbolicLink = fileAttributes[NSFileType] == NSFileTypeSymbolicLink;
-    XCTAssertTrue(fileIsSymbolicLink, @"Relative symbolic links should persist from the original archive to the outputted files.");
+    BOOL txFileIsSymbolicLink = fileAttributes[NSFileType] == NSFileTypeSymbolicLink;
+    XCTAssertTrue(txFileIsSymbolicLink, @"Relative symbolic links should persist from the original archive to the outputted files.");
 
     NSDictionary *folderAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:testSymlinkFolder error: nil];
     BOOL folderIsSymbolicLink = folderAttributes[NSFileType] == NSFileTypeSymbolicLink;

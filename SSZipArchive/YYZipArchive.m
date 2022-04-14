@@ -16,8 +16,8 @@ NSString *const YYZipArchiveErrorDomain = @"YYZipArchiveErrorDomain";
 
 #define CHUNK 16384
 
-int _zipOpenEntry(zipFile entry, NSString *name, const zip_fileinfo *zipfi, int level, NSString *password, BOOL aes);
-BOOL _fileIsSymbolicLink(const unz_file_info *fileInfo);
+int _txZipOpenEntry(zipFile entry, NSString *name, const zip_fileinfo *zipfi, int level, NSString *password, BOOL aes);
+BOOL _txFileIsSymbolicLink(const unz_file_info *fileInfo);
 
 #ifndef API_AVAILABLE
 // Xcode 7- compatibility
@@ -428,7 +428,7 @@ BOOL _fileIsSymbolicLink(const unz_file_info *fileInfo);
             unzGetCurrentFileInfo(zip, &fileInfo, filename, fileInfo.size_filename + 1, NULL, 0, NULL, 0);
             filename[fileInfo.size_filename] = '\0';
             
-            BOOL fileIsSymbolicLink = _fileIsSymbolicLink(&fileInfo);
+            BOOL txFileIsSymbolicLink = _txFileIsSymbolicLink(&fileInfo);
             
             NSString * strPath = [YYZipArchive _filenameStringWithCString:filename
                                                           version_made_by:fileInfo.version
@@ -487,9 +487,9 @@ BOOL _fileIsSymbolicLink(const unz_file_info *fileInfo);
                 continue;
             }
             
-            if (isDirectory && !fileIsSymbolicLink) {
+            if (isDirectory && !txFileIsSymbolicLink) {
                 // nothing to read/write for a directory
-            } else if (!fileIsSymbolicLink) {
+            } else if (!txFileIsSymbolicLink) {
                 // ensure we are not creating stale file entries
                 int readBytes = unzReadCurrentFile(zip, buffer, 4096);
                 if (readBytes >= 0) {
@@ -1021,7 +1021,7 @@ BOOL _fileIsSymbolicLink(const unz_file_info *fileInfo);
     
     [YYZipArchive zipInfo:&zipInfo setAttributesOfItemAtPath:path];
     
-    int error = _zipOpenEntry(_zip, [folderName stringByAppendingString:@"/"], &zipInfo, Z_NO_COMPRESSION, password, NO);
+    int error = _txZipOpenEntry(_zip, [folderName stringByAppendingString:@"/"], &zipInfo, Z_NO_COMPRESSION, password, NO);
     const void *buffer = NULL;
     zipWriteInFileInZip(_zip, buffer, 0);
     zipCloseFileInZip(_zip);
@@ -1065,7 +1065,7 @@ BOOL _fileIsSymbolicLink(const unz_file_info *fileInfo);
         return NO;
     }
     
-    int error = _zipOpenEntry(_zip, fileName, &zipInfo, compressionLevel, password, aes);
+    int error = _txZipOpenEntry(_zip, fileName, &zipInfo, compressionLevel, password, aes);
     
     while (!feof(input) && !ferror(input))
     {
@@ -1095,7 +1095,7 @@ BOOL _fileIsSymbolicLink(const unz_file_info *fileInfo);
     zip_fileinfo zipInfo = {};
     [YYZipArchive zipInfo:&zipInfo setDate:[NSDate date]];
     
-    int error = _zipOpenEntry(_zip, filename, &zipInfo, compressionLevel, password, aes);
+    int error = _txZipOpenEntry(_zip, filename, &zipInfo, compressionLevel, password, aes);
     
     zipWriteInFileInZip(_zip, data.bytes, (unsigned int)data.length);
     
@@ -1279,7 +1279,7 @@ BOOL _fileIsSymbolicLink(const unz_file_info *fileInfo);
 
 @end
 
-int _zipOpenEntry(zipFile entry, NSString *name, const zip_fileinfo *zipfi, int level, NSString *password, BOOL aes)
+int _txZipOpenEntry(zipFile entry, NSString *name, const zip_fileinfo *zipfi, int level, NSString *password, BOOL aes)
 {
     // https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT
     uint16_t made_on_darwin = 19 << 8;
@@ -1290,7 +1290,7 @@ int _zipOpenEntry(zipFile entry, NSString *name, const zip_fileinfo *zipfi, int 
 
 #pragma mark - Private tools for file info
 
-BOOL _fileIsSymbolicLink(const unz_file_info *fileInfo)
+BOOL _txFileIsSymbolicLink(const unz_file_info *fileInfo)
 {
     //
     // Determine whether this is a symbolic link:
@@ -1307,8 +1307,8 @@ BOOL _fileIsSymbolicLink(const unz_file_info *fileInfo)
     const uLong BSD_SFMT = 0170000;
     const uLong BSD_IFLNK = 0120000;
     
-    BOOL fileIsSymbolicLink = ((fileInfo->version >> 8) == ZipUNIXVersion) && BSD_IFLNK == (BSD_SFMT & (fileInfo->external_fa >> 16));
-    return fileIsSymbolicLink;
+    BOOL txFileIsSymbolicLink = ((fileInfo->version >> 8) == ZipUNIXVersion) && BSD_IFLNK == (BSD_SFMT & (fileInfo->external_fa >> 16));
+    return txFileIsSymbolicLink;
 }
 
 #pragma mark - Private tools for unreadable encodings
